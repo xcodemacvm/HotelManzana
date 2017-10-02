@@ -10,6 +10,42 @@ import UIKit
 
 class AddRegistrationTableViewController: UITableViewController {
 
+    let checkInDatePickerCellIndexPath = IndexPath(row: 1, section: 1)
+    let checkOutDatePickerCellIndexPath = IndexPath(row: 3, section: 1)
+    
+    var isCheckInDatePickerShown: Bool = false {
+        didSet {
+            checkInDatePicker.isHidden = !isCheckInDatePickerShown
+        }
+    }
+    
+    var isCheckOutDatePickerShown: Bool = false {
+        didSet {
+            checkOutDatePicker.isHidden = !isCheckOutDatePickerShown
+        }
+    }
+    
+    
+    @IBOutlet weak var wifiSwitch: UISwitch!
+    
+    @IBOutlet weak var numberOfAdultsLabel: UILabel!
+    @IBOutlet weak var numberOfAdultsStepper: UIStepper!
+    @IBOutlet weak var numberOfChildrenLabel: UILabel!
+    @IBOutlet weak var numberOfChildrenStepper: UIStepper!
+    
+    func updateNumberOfGuests() {
+        numberOfAdultsLabel.text = "\(Int(numberOfAdultsStepper.value))"
+        numberOfChildrenLabel.text = "\(Int(numberOfChildrenStepper.value))"
+    }
+    
+    @IBAction func stepperValueChanged(_ sender: UIStepper) {
+        updateNumberOfGuests()
+    }
+    
+    
+    @IBAction func wifiSwitchChanged(_ sender: UISwitch) {
+    }
+    
     @IBOutlet weak var checkInDateLabel: UILabel!
     @IBOutlet weak var checkInDatePicker: UIDatePicker!
     @IBOutlet weak var checkOutDateLabel: UILabel!
@@ -29,6 +65,9 @@ class AddRegistrationTableViewController: UITableViewController {
         let email = emailTextField.text ?? ""
         let checkInDate = checkInDateLabel.text ?? ""
         let checkOutDate = checkOutDateLabel.text ?? ""
+        let numberOfAdults = "\(numberOfAdultsLabel.text ?? "")"
+        let numberOfChildren = "\(numberOfChildrenLabel.text ?? "")"
+        let hasWifi = wifiSwitch.isOn
         
         print("Done tapped!")
         print("first name: \(firstName)")
@@ -36,6 +75,10 @@ class AddRegistrationTableViewController: UITableViewController {
         print("email: \(email)")
         print("Check-In: \(checkInDate)")
         print("Check-Out: \(checkOutDate)")
+        print("Number of Adults: \(numberOfAdults)")
+        print("Number of Children: \(numberOfChildren)")
+        print("Wifi: \(hasWifi)")
+
     }
     
     func updateDateViews() {
@@ -48,12 +91,14 @@ class AddRegistrationTableViewController: UITableViewController {
         checkOutDateLabel.text = dateFormatter.string(from: checkOutDatePicker.date)
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let midnightToday = Calendar.current.startOfDay(for: Date())
         checkInDatePicker.minimumDate = midnightToday
         checkInDatePicker.date = midnightToday
         updateDateViews()
+        updateNumberOfGuests()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -71,7 +116,7 @@ class AddRegistrationTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -79,10 +124,66 @@ class AddRegistrationTableViewController: UITableViewController {
         switch (section) {
         case 0: return 3
         case 1: return 4
+        case 2: return 2
+        case 3: return 1
         default: return 0
         }
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch (indexPath.row, indexPath.section) {
+        case (checkInDatePickerCellIndexPath.row, checkInDatePickerCellIndexPath.section):
+            if isCheckInDatePickerShown {
+              return 216
+            } else {
+                return 0
+            }
+        case (checkOutDatePickerCellIndexPath.row, checkOutDatePickerCellIndexPath.section):
+            if isCheckOutDatePickerShown {
+                return 216
+            } else {
+                return 0
+            }
+        default: return 44
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        switch (indexPath.row, indexPath.section) {
+        case (checkInDatePickerCellIndexPath.row - 1, checkInDatePickerCellIndexPath.section):
+            if isCheckInDatePickerShown {
+                isCheckInDatePickerShown = false
+            } else if isCheckOutDatePickerShown {
+                isCheckOutDatePickerShown = false
+                isCheckInDatePickerShown = true
+            } else {
+                isCheckInDatePickerShown = true
+            }
+            // animate the change in the row heights without reloading the cell. We can use tableView.reloadData() but we have to provide an animation because it's not animated when shown.
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            
+        case (checkOutDatePickerCellIndexPath.row - 1, checkOutDatePickerCellIndexPath.section):
+            if isCheckOutDatePickerShown {
+                isCheckOutDatePickerShown = false
+            } else if isCheckInDatePickerShown {
+                isCheckInDatePickerShown = false
+                isCheckOutDatePickerShown = true
+            } else {
+                isCheckOutDatePickerShown = true
+            }
+            
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            
+        
+        default:
+            break
+        }
+    }
+    
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
