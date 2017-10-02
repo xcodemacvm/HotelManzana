@@ -10,26 +10,51 @@ import UIKit
 
 class AddRegistrationTableViewController: UITableViewController {
 
+    @IBOutlet weak var checkInDateLabel: UILabel!
+    @IBOutlet weak var checkInDatePicker: UIDatePicker!
+    @IBOutlet weak var checkOutDateLabel: UILabel!
+    @IBOutlet weak var checkOutDatePicker: UIDatePicker!
     
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     
+    @IBAction func datePickerValueChanged(_ sender: UIDatePicker) {
+        updateDateViews()
+    }
+    
     @IBAction func doneBarButtonTapped(_ sender: UIBarButtonItem) {
         let firstName = firstNameTextField.text	?? ""
         let lastName = lastNameTextField.text ?? ""
         let email = emailTextField.text ?? ""
+        let checkInDate = checkInDateLabel.text ?? ""
+        let checkOutDate = checkOutDateLabel.text ?? ""
         
         print("Done tapped!")
         print("first name: \(firstName)")
         print("last name: \(lastName)")
         print("email: \(email)")
-
+        print("Check-In: \(checkInDate)")
+        print("Check-Out: \(checkOutDate)")
+    }
+    
+    func updateDateViews() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium //or only .medium :)
+        
+        checkOutDatePicker.minimumDate = checkInDatePicker.date.addingTimeInterval(86400)
+        
+        checkInDateLabel.text = dateFormatter.string(from: checkInDatePicker.date)
+        checkOutDateLabel.text = dateFormatter.string(from: checkOutDatePicker.date)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let midnightToday = Calendar.current.startOfDay(for: Date())
+        checkInDatePicker.minimumDate = midnightToday
+        checkInDatePicker.date = midnightToday
+        updateDateViews()
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -46,12 +71,16 @@ class AddRegistrationTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        switch (section) {
+        case 0: return 3
+        case 1: return 4
+        default: return 0
+        }
     }
 
     /*
