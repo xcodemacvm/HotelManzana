@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C1F86F31F845A3C006B77EA /* RegistrationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1F86F21F845A3C006B77EA /* RegistrationTableViewController.swift */; };
 		6C4589441F80C4F4007E40EA /* AddRegistrationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4589431F80C4F4007E40EA /* AddRegistrationTableViewController.swift */; };
 		6C50E9361F7E070F009CE32C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C50E9351F7E070F009CE32C /* AppDelegate.swift */; };
 		6C50E93B1F7E070F009CE32C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C50E9391F7E070F009CE32C /* Main.storyboard */; };
@@ -14,9 +15,11 @@
 		6C50E9401F7E070F009CE32C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C50E93E1F7E070F009CE32C /* LaunchScreen.storyboard */; };
 		6C9DE0CA1F820DEB003FF8FC /* RoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9DE0C91F820DEB003FF8FC /* RoomType.swift */; };
 		6C9DE0CC1F8210BA003FF8FC /* SelectRoomTypeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9DE0CB1F8210BA003FF8FC /* SelectRoomTypeTableViewController.swift */; };
+		6CFF22911F83626B002CFF6B /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF22901F83626B002CFF6B /* Registration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C1F86F21F845A3C006B77EA /* RegistrationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationTableViewController.swift; sourceTree = "<group>"; };
 		6C4589431F80C4F4007E40EA /* AddRegistrationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRegistrationTableViewController.swift; sourceTree = "<group>"; };
 		6C50E9321F7E070F009CE32C /* HotelManzana.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HotelManzana.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C50E9351F7E070F009CE32C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -26,6 +29,7 @@
 		6C50E9411F7E070F009CE32C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C9DE0C91F820DEB003FF8FC /* RoomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomType.swift; sourceTree = "<group>"; };
 		6C9DE0CB1F8210BA003FF8FC /* SelectRoomTypeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRoomTypeTableViewController.swift; sourceTree = "<group>"; };
+		6CFF22901F83626B002CFF6B /* Registration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +64,9 @@
 			children = (
 				6C50E9351F7E070F009CE32C /* AppDelegate.swift */,
 				6C50E9391F7E070F009CE32C /* Main.storyboard */,
+				6C1F86F21F845A3C006B77EA /* RegistrationTableViewController.swift */,
 				6C4589431F80C4F4007E40EA /* AddRegistrationTableViewController.swift */,
+				6CFF22901F83626B002CFF6B /* Registration.swift */,
 				6C9DE0CB1F8210BA003FF8FC /* SelectRoomTypeTableViewController.swift */,
 				6C9DE0C91F820DEB003FF8FC /* RoomType.swift */,
 				6C50E93C1F7E070F009CE32C /* Assets.xcassets */,
@@ -145,6 +151,8 @@
 				6C9DE0CC1F8210BA003FF8FC /* SelectRoomTypeTableViewController.swift in Sources */,
 				6C4589441F80C4F4007E40EA /* AddRegistrationTableViewController.swift in Sources */,
 				6C50E9361F7E070F009CE32C /* AppDelegate.swift in Sources */,
+				6CFF22911F83626B002CFF6B /* Registration.swift in Sources */,
+				6C1F86F31F845A3C006B77EA /* RegistrationTableViewController.swift in Sources */,
 				6C9DE0CA1F820DEB003FF8FC /* RoomType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

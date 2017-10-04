@@ -8,11 +8,20 @@
 
 import UIKit
 
-class AddRegistrationTableViewController: UITableViewController {
-
+class AddRegistrationTableViewController: UITableViewController, SelectRoomTypeTableViewControllerDelegate {
+        
+        func didSelect(roomType: RoomType) {
+            self.roomType = roomType
+            updateRoomType()
+        }
+        
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
     let checkInDatePickerCellIndexPath = IndexPath(row: 1, section: 1)
     let checkOutDatePickerCellIndexPath = IndexPath(row: 3, section: 1)
-    
     var isCheckInDatePickerShown: Bool = false {
         didSet {
             checkInDatePicker.isHidden = !isCheckInDatePickerShown
@@ -24,7 +33,30 @@ class AddRegistrationTableViewController: UITableViewController {
             checkOutDatePicker.isHidden = !isCheckOutDatePickerShown
         }
     }
+    var registration: Registration? {
+        guard let roomType = roomType else { return nil }
+        
+        let firstName = firstNameTextField.text    ?? ""
+        let lastName = lastNameTextField.text ?? ""
+        let email = emailTextField.text ?? ""
+        let checkInDate = checkInDatePicker.date
+        let checkOutDate = checkOutDatePicker.date
+        let numberOfAdults = Int(numberOfAdultsStepper.value)
+        let numberOfChildren = Int(numberOfChildrenStepper.value)
+        let hasWifi = wifiSwitch.isOn
+        
+        return Registration (firstName: firstName, lastName: lastName, emailAddress: email, checkInDate: checkInDate, checkOutDate: checkOutDate, numberOfAdults: numberOfAdults, numberOfChildren: numberOfChildren, roomType: roomType, wifi: hasWifi)
+    }
+    var roomType: RoomType?
+    @IBOutlet weak var roomTypeLabel: UILabel!
     
+    func updateRoomType() {
+        if let roomType = roomType {
+            roomTypeLabel.text = roomType.name
+        } else {
+            roomTypeLabel.text = "Not Set."
+        }
+    }
     
     @IBOutlet weak var wifiSwitch: UISwitch!
     
@@ -68,7 +100,7 @@ class AddRegistrationTableViewController: UITableViewController {
         let numberOfAdults = "\(numberOfAdultsLabel.text ?? "")"
         let numberOfChildren = "\(numberOfChildrenLabel.text ?? "")"
         let hasWifi = wifiSwitch.isOn
-        
+        let roomChoice = roomType?.name ?? "Not set"
         print("Done tapped!")
         print("first name: \(firstName)")
         print("last name: \(lastName)")
@@ -78,9 +110,10 @@ class AddRegistrationTableViewController: UITableViewController {
         print("Number of Adults: \(numberOfAdults)")
         print("Number of Children: \(numberOfChildren)")
         print("Wifi: \(hasWifi)")
-
+        print("roomChoice: \(roomChoice)")
     }
     
+        
     func updateDateViews() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium //or only .medium :)
@@ -99,6 +132,7 @@ class AddRegistrationTableViewController: UITableViewController {
         checkInDatePicker.date = midnightToday
         updateDateViews()
         updateNumberOfGuests()
+        updateRoomType()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -116,7 +150,7 @@ class AddRegistrationTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 4
+        return 5
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -126,6 +160,7 @@ class AddRegistrationTableViewController: UITableViewController {
         case 1: return 4
         case 2: return 2
         case 3: return 1
+        case 4: return 1
         default: return 0
         }
     }
@@ -229,14 +264,17 @@ class AddRegistrationTableViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SelectRoomType" {
+            let destinationViewController = segue.destination as? SelectRoomTypeTableViewController
+            destinationViewController?.delegate = self
+            destinationViewController?.roomType = roomType
+        }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
 
 }

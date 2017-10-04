@@ -1,28 +1,16 @@
 //
-//  SelectRoomTypeTableViewController.swift
+//  RegistrationTableViewController.swift
 //  HotelManzana
 //
-//  Created by AA1 on 02/10/17.
+//  Created by AA1 on 03/10/17.
 //  Copyright © 2017 AA1. All rights reserved.
 //
 
 import UIKit
 
-protocol SelectRoomTypeTableViewControllerDelegate {
-    func didSelect(roomType: RoomType)
-}
+class RegistrationTableViewController: UITableViewController {
 
-class SelectRoomTypeTableViewController: UITableViewController {
-    
-    var roomType: RoomType?
-    var delegate: SelectRoomTypeTableViewControllerDelegate?
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        roomType = RoomType.all[indexPath.row]
-        delegate?.didSelect(roomType: roomType!)
-        tableView.reloadData()
-    }
+    var registrations: [Registration] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,23 +36,27 @@ class SelectRoomTypeTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return RoomType.all.count
+        return registrations.count
     }
 
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RoomTypeCell", for: indexPath)
-        let roomType = RoomType.all[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RegistrationCell", for: indexPath)
         
-        cell.textLabel?.text = roomType.name
-        cell.detailTextLabel?.text = "$ \(roomType.price)"
+        let registration = registrations[indexPath.row]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
         
-        if roomType == self.roomType {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
+        cell.textLabel?.text = registration.firstName + " " + registration.lastName
+        cell.detailTextLabel?.text = dateFormatter.string(from: registration.checkInDate) + dateFormatter.string(from: registration.checkOutDate) + ": " + registration.roomType.name
 
         return cell
+    }
+    
+    @IBAction func unwindFromAddRegistration(unwindSegue: UIStoryboardSegue) {
+        guard let addRegistrationTableViewController = unwindSegue.source as? AddRegistrationTableViewController, let registration = addRegistrationTableViewController.registration else { return }
+        registrations.append(registration)
+        tableView.reloadData()
     }
     
 
